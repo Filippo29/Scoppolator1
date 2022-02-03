@@ -28,7 +28,7 @@ public class Piece {
         return black ? chars[p2+1].toLowerCase() : chars[p2+1];
     }
 
-    public static ArrayList<String> getMoves(Board b, int x, int y){
+    public static ArrayList<String> getMoves(Board b, int x, int y, boolean verifyCheck){
         ArrayList<ArrayList<Integer>> board = b.board;
         int p = board.get(y).get(x);
         ArrayList<String> moves = new ArrayList<>();
@@ -235,12 +235,27 @@ public class Piece {
         }
         if(piece == KING){
             if(white && b.whiteCanShortCastle){
-                if(board.get(0).get(5) == BLANK && board.get(0).get(6) == BLANK)
-                    moves.add("O-O");
+                if(board.get(0).get(5) == BLANK && board.get(0).get(6) == BLANK) {
+                    if(!b.isInCheck(5, 0, false) && !b.isInCheck(6, 0, false))
+                        moves.add("O-O");
+                }
             }
             if(white && b.whiteCanLongCastle){
-                if(board.get(0).get(1) == BLANK && board.get(0).get(2) == BLANK && board.get(0).get(3) == BLANK)
-                    moves.add("O-O-O");
+                if(board.get(0).get(1) == BLANK && board.get(0).get(2) == BLANK && board.get(0).get(3) == BLANK) {
+                    if (!b.isInCheck(1, 0, false) && !b.isInCheck(2, 0, false) && !b.isInCheck(3, 0, false))
+                        moves.add("O-O-O");
+                }
+            }
+            if(!white && b.blackCanShortCastle){
+                if(board.get(7).get(5) == BLANK && board.get(7).get(6) == BLANK) {
+                    if(!b.isInCheck(5, 7, false) && !b.isInCheck(6, 7, false))
+                        moves.add("O-O");
+                }
+            }
+            if(!white && b.blackCanLongCastle){
+                if(board.get(7).get(1) == BLANK && board.get(7).get(2) == BLANK && board.get(7).get(3) == BLANK)
+                    if (!b.isInCheck(1, 7, false) && !b.isInCheck(2, 7, false) && !b.isInCheck(3, 7, false))
+                        moves.add("O-O-O");
             }
             if(x + 1 < 8 && y + 1 < 8){
                 if(board.get(y + 1).get(x + 1) == BLANK)
@@ -292,6 +307,20 @@ public class Piece {
             }
         }
 
-        return moves;
+        ArrayList<String> legal = new ArrayList<>();
+        if(verifyCheck) {
+            for (String move : moves) {
+                Board nboard = b.move(x, y, move);
+                int[] whiteKing = nboard.getKing(true);
+                int[] blackKing = nboard.getKing(false);
+                if (white && !nboard.isInCheck(whiteKing[0], whiteKing[1], false))
+                    legal.add(move);
+                if (!white && !nboard.isInCheck(blackKing[0], blackKing[1], true))
+                    legal.add(move);
+            }
+        }else
+            legal = moves;
+
+        return legal;
     }
 }
