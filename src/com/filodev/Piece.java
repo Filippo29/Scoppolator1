@@ -13,6 +13,7 @@ public class Piece {
     final static String[] chars = {" ", "P", "N", "B", "R", "K", "Q"};
 
     final static String[] lines = {"a", "b", "c", "d", "e", "f", "g", "h"};
+    final static int[] points = {0, 1, 3, 3, 5, 0, 9};
 
     public static int getPiece(int piece, boolean white){
         return white ? piece : piece + 10;

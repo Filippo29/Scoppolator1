@@ -52,10 +52,10 @@ public class Board {
         board.get(7).set(6, Piece.getPiece(Piece.KNIGHT, false));
         board.get(7).set(7, Piece.getPiece(Piece.ROOK, false));
 
-        /*board.get(0).set(1, Piece.getPiece(Piece.BLANK, true));
+        board.get(0).set(1, Piece.getPiece(Piece.BLANK, true));
         board.get(0).set(2, Piece.getPiece(Piece.BLANK, true));
         board.get(0).set(3, Piece.getPiece(Piece.BLANK, true));
-        board.get(1).set(4, Piece.getPiece(Piece.BLANK, true));*/
+        board.get(1).set(4, Piece.getPiece(Piece.BLANK, true));
     }
 
     public boolean isInCheck(int x, int y, boolean white){
@@ -102,23 +102,23 @@ public class Board {
     public Board move(int x, int y, String move){
         Board nboard = cloneBoard(this);
         if(x == 4 && y == 0){
-            whiteCanLongCastle = false;
-            whiteCanShortCastle = false;
+            nboard.whiteCanLongCastle = false;
+            nboard.whiteCanShortCastle = false;
         }
         if(x == 4 && y == 7) {
-            blackCanLongCastle = false;
-            blackCanShortCastle = false;
+            nboard.blackCanLongCastle = false;
+            nboard.blackCanShortCastle = false;
         }
 
         if(!board.get(0).get(0).equals(nboard.board.get(0).get(0)))
-            whiteCanLongCastle = false;
+            nboard.whiteCanLongCastle = false;
         if(!board.get(0).get(7).equals(nboard.board.get(0).get(7)))
-            whiteCanShortCastle = false;
+            nboard.whiteCanShortCastle = false;
 
         if(!board.get(7).get(0).equals(nboard.board.get(7).get(0)))
-            blackCanLongCastle = false;
+            nboard.blackCanLongCastle = false;
         if(!board.get(7).get(7).equals(nboard.board.get(7).get(7)))
-            blackCanShortCastle = false;
+            nboard.blackCanShortCastle = false;
 
 
         if(move == "O-O"){
@@ -163,6 +163,16 @@ public class Board {
             }
         }
         return new Board(nboard, board.whiteCanShortCastle, board.whiteCanLongCastle, board.blackCanShortCastle, board.blackCanLongCastle);
+    }
+
+    public double points(){
+        int points = 0;
+        for(ArrayList<Integer> rank : board){
+            for(Integer piece : rank){
+                points += Piece.isWhite(piece) ? Piece.points[piece+1] : -Piece.points[piece%10+1];
+            }
+        }
+        return points;
     }
 
     public void print(){
