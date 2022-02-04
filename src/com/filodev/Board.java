@@ -10,6 +10,8 @@ public class Board {
     public boolean blackCanShortCastle = true;
     public boolean blackCanLongCastle = true;
 
+    private final int DEPTH = 4;
+
     public Board(ArrayList<ArrayList<Integer>> b, boolean whiteCanShortCastle, boolean whiteCanLongCastle, boolean blackCanShortCastle, boolean blackCanLongCastle){
         this.board = b;
         this.whiteCanShortCastle = whiteCanShortCastle;
@@ -165,6 +167,10 @@ public class Board {
         return new Board(nboard, board.whiteCanShortCastle, board.whiteCanLongCastle, board.blackCanShortCastle, board.blackCanLongCastle);
     }
 
+    public double evaluate(){
+        return points();
+    }
+
     public double points(){
         int points = 0;
         for(ArrayList<Integer> rank : board){
@@ -173,6 +179,38 @@ public class Board {
             }
         }
         return points;
+    }
+
+    public String findBestMove(boolean whiteTurn){
+        double eval = -101;
+        String bestMove = "";
+        for(int y = 0; y < board.size(); y++) {
+            for (int x = 0; x < board.get(y).size(); x++) {
+                ArrayList<String> moves = Piece.getMoves(this, x, y, true);
+                for(String move : moves){
+                    double beval = findBestMove(move(x, y, move), !whiteTurn, DEPTH-1);
+                    if(eval == -101 || (whiteTurn && beval > eval) || (!whiteTurn && beval < eval)) {
+                        eval = beval;
+                        bestMove = move;
+                    }
+                }
+            }
+        }
+        return bestMove;
+    }
+
+    public double findBestMove(Board nboard, boolean whiteTurn, int depth){
+        if(depth == 0)
+            return nboard.evaluate();
+        for(int y = 0; y < board.size(); y++) {
+            for (int x = 0; x < board.get(y).size(); x++) {
+                ArrayList<String> moves = Piece.getMoves(this, x, y, true);
+                for(String move : moves){
+                    return findBestMove(move(x, y, move), !whiteTurn, DEPTH-1);
+                }
+            }
+        }
+        return 0;
     }
 
     public void print(){
