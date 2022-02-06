@@ -235,28 +235,30 @@ public class Piece {
             }
         }
         if(piece == KING){
-            if(white && b.whiteCanShortCastle){
-                if(board.get(0).get(5) == BLANK && board.get(0).get(6) == BLANK) {
-                    if(!b.isInCheck(5, 0, false) && !b.isInCheck(6, 0, false))
-                        moves.add("O-O");
+            if(verifyCheck) {
+                if (white && b.whiteCanShortCastle) {
+                    if (board.get(0).get(5) == BLANK && board.get(0).get(6) == BLANK) {
+                        if (!b.isInCheck(5, 0, false) && !b.isInCheck(6, 0, false))
+                            moves.add("O-O");
+                    }
                 }
-            }
-            if(white && b.whiteCanLongCastle){
-                if(board.get(0).get(1) == BLANK && board.get(0).get(2) == BLANK && board.get(0).get(3) == BLANK) {
-                    if (!b.isInCheck(1, 0, false) && !b.isInCheck(2, 0, false) && !b.isInCheck(3, 0, false))
-                        moves.add("O-O-O");
+                if (white && b.whiteCanLongCastle) {
+                    if (board.get(0).get(1) == BLANK && board.get(0).get(2) == BLANK && board.get(0).get(3) == BLANK) {
+                        if (!b.isInCheck(1, 0, false) && !b.isInCheck(2, 0, false) && !b.isInCheck(3, 0, false))
+                            moves.add("O-O-O");
+                    }
                 }
-            }
-            if(!white && b.blackCanShortCastle){
-                if(board.get(7).get(5) == BLANK && board.get(7).get(6) == BLANK) {
-                    if(!b.isInCheck(5, 7, false) && !b.isInCheck(6, 7, false))
-                        moves.add("O-O");
+                if (!white && b.blackCanShortCastle) {
+                    if (board.get(7).get(5) == BLANK && board.get(7).get(6) == BLANK) {
+                        if (!b.isInCheck(5, 7, false) && !b.isInCheck(6, 7, false))
+                            moves.add("O-O");
+                    }
                 }
-            }
-            if(!white && b.blackCanLongCastle){
-                if(board.get(7).get(1) == BLANK && board.get(7).get(2) == BLANK && board.get(7).get(3) == BLANK)
-                    if (!b.isInCheck(1, 7, false) && !b.isInCheck(2, 7, false) && !b.isInCheck(3, 7, false))
-                        moves.add("O-O-O");
+                if (!white && b.blackCanLongCastle) {
+                    if (board.get(7).get(1) == BLANK && board.get(7).get(2) == BLANK && board.get(7).get(3) == BLANK)
+                        if (!b.isInCheck(1, 7, false) && !b.isInCheck(2, 7, false) && !b.isInCheck(3, 7, false))
+                            moves.add("O-O-O");
+                }
             }
             if(x + 1 < 8 && y + 1 < 8){
                 if(board.get(y + 1).get(x + 1) == BLANK)

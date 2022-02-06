@@ -60,6 +60,26 @@ public class Board {
         board.get(1).set(4, Piece.getPiece(Piece.BLANK, true));
     }
 
+    public Board(int c){
+        this.whiteCanShortCastle = false;
+        this.whiteCanLongCastle = false;
+        this.blackCanShortCastle = false;
+        this.blackCanLongCastle = false;
+        for(int i = 0; i < 8; i++){
+            ArrayList<Integer> line = new ArrayList<>();
+            for(int y = 0; y < 8; y++){
+                line.add(Piece.BLANK);
+            }
+            board.add(line);
+        }
+        board.get(1).set(2, Piece.getPiece(Piece.KING, true));
+        board.get(7).set(1, Piece.getPiece(Piece.KING, false));
+        board.get(6).set(4, Piece.getPiece(Piece.QUEEN, false));
+        board.get(4).set(4, Piece.getPiece(Piece.KNIGHT, true));
+        board.get(5).set(0, Piece.getPiece(Piece.PAWN, false));
+
+    }
+
     public boolean isInCheck(int x, int y, boolean white){
         for(int i = 0; i < 8; i++){
             for(int j = 0; j < 8; j++){
@@ -206,7 +226,7 @@ public class Board {
             for (int x = 0; x < board.get(y).size(); x++) {
                 ArrayList<String> moves = Piece.getMoves(this, x, y, true);
                 for(String move : moves){
-                    return findBestMove(move(x, y, move), !whiteTurn, DEPTH-1);
+                    return findBestMove(move(x, y, move), !whiteTurn, depth-1);
                 }
             }
         }
