@@ -202,17 +202,20 @@ public class Board {
     }
 
     public String findBestMove(boolean whiteTurn){
-        double eval = -101;
+        double beval = -101;
         String bestMove = "";
         for(int y = 0; y < board.size(); y++) {
             for (int x = 0; x < board.get(y).size(); x++) {
+                if(Piece.isWhite(board.get(y).get(x)) != whiteTurn)
+                    continue;
                 ArrayList<String> moves = Piece.getMoves(this, x, y, true);
                 for(String move : moves){
-                    double beval = findBestMove(move(x, y, move), !whiteTurn, DEPTH-1);
-                    if(eval == -101 || (whiteTurn && beval > eval) || (!whiteTurn && beval < eval)) {
-                        eval = beval;
+                    double eval = findBestMove(move(x, y, move), !whiteTurn, DEPTH-1);
+                    if(beval == -101 || (whiteTurn && eval > beval) || (!whiteTurn && eval < beval)) {
+                        beval = eval;
                         bestMove = move;
                     }
+                    //System.out.println(move + " ----> " + eval);
                 }
             }
         }
@@ -220,17 +223,23 @@ public class Board {
     }
 
     public double findBestMove(Board nboard, boolean whiteTurn, int depth){
+        double beval = -101;
         if(depth == 0)
             return nboard.evaluate();
         for(int y = 0; y < board.size(); y++) {
-            for (int x = 0; x < board.get(y).size(); x++) {
-                ArrayList<String> moves = Piece.getMoves(this, x, y, true);
+            for(int x = 0; x < board.get(y).size(); x++) {
+                if(Piece.isWhite(board.get(y).get(x)) != whiteTurn)
+                    continue;
+                ArrayList<String> moves = Piece.getMoves(nboard, x, y, true);
                 for(String move : moves){
-                    return findBestMove(move(x, y, move), !whiteTurn, depth-1);
+                    double eval =  findBestMove(nboard.move(x, y, move), !whiteTurn, depth-1);
+                    if(beval == -101 || (whiteTurn && beval < eval) || (!whiteTurn && beval > eval)) {
+                        beval = eval;
+                    }
                 }
             }
         }
-        return 0;
+        return beval;
     }
 
     public void print(){

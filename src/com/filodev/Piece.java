@@ -316,6 +316,8 @@ public class Piece {
                 Board nboard = b.move(x, y, move);
                 int[] whiteKing = nboard.getKing(true);
                 int[] blackKing = nboard.getKing(false);
+                if(whiteKing == null || blackKing == null)
+                    continue;
                 if (white && !nboard.isInCheck(whiteKing[0], whiteKing[1], false))
                     legal.add(move);
                 if (!white && !nboard.isInCheck(blackKing[0], blackKing[1], true))
