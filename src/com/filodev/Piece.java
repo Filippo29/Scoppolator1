@@ -29,6 +29,23 @@ public class Piece {
         return black ? chars[p2+1].toLowerCase() : chars[p2+1];
     }
 
+    public static int fromChar(char c){
+        char lower = Character.toLowerCase(c);
+        if(lower == 'p')
+            return lower == c ? PAWN+10 : PAWN;
+        if(lower == 'k')
+            return lower == c ? KING+10 : KING;
+        if(lower == 'n')
+            return lower == c ? KNIGHT+10 : KNIGHT;
+        if(lower == 'b')
+            return lower == c ? BISHOP+10 : BISHOP;
+        if(lower == 'r')
+            return lower == c ? ROOK+10 : ROOK;
+        if(lower == 'q')
+            return lower == c ? QUEEN+10 : QUEEN;
+        return -1;
+    }
+
     public static ArrayList<String> getMoves(Board b, int x, int y, boolean verifyCheck){
         ArrayList<ArrayList<Integer>> board = b.board;
         int p = board.get(y).get(x);

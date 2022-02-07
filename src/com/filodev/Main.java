@@ -5,9 +5,9 @@ public class Main {
     public static void main(String[] args) {
         Board b = new Board(1);
         b.print();
-        //System.out.println(Piece.getMoves(b, 4, 0, true));
-        //System.out.println(b.isInCheck(3, 2, true));
+
+        //Board b2 = Board.fromFEN("r1bq1rk1/pp3ppp/3n4/2p1N3/2B5/7P/PPP2PP1/R1BQR1K1 w");
+        //b2.print();
         System.out.println(b.findBestMove(true));
-        //b.move(4, 0, "O-O-O").print();
     }
 }
